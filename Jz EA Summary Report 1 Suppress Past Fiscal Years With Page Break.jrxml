@@ -153,7 +153,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
        and a.pms_scenario_id = b.pms_scenario_id
-       and a.eff_year >= (EXTRACT(YEAR FROM sysdate) +  DECODE(SIGN(TO_CHAR(sysdate, 'MM') - 6), -1, 0, 1))
+       and a.eff_year >= (EXTRACT(YEAR FROM sysdate) +  SIGN(TO_CHAR(sysdate, 'MM'))
        order by a.pms_scenario_id,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
        a.eff_year,
