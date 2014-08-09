@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="shouldWork" language="groovy" pageWidth="792" pageHeight="576" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.4641000000000095"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[select * from excelandcount]]>
+	</queryString>
+	<field name="DISTRICT" class="java.lang.String"/>
+	<field name="YEAR" class="java.lang.String"/>
+	<field name="EA" class="java.lang.String"/>
+	<field name="REC_COUNT" class="java.math.BigDecimal"/>
+	<field name="CA_PROJECTID" class="java.lang.String"/>
+	<field name="COUNTY" class="java.lang.String"/>
+	<field name="ROUTE" class="java.lang.String"/>
+	<field name="RS" class="java.lang.String"/>
+	<field name="BPP" class="java.lang.String"/>
+	<field name="BEG_PM" class="java.lang.String"/>
+	<field name="BPS" class="java.lang.String"/>
+	<field name="EPP" class="java.lang.String"/>
+	<field name="END_PM" class="java.lang.String"/>
+	<field name="EPS" class="java.lang.String"/>
+	<field name="DIR" class="java.lang.String"/>
+	<field name="LANE" class="java.lang.String"/>
+	<field name="TOTAL_LANE_MILES" class="java.lang.Double"/>
+	<field name="TREATMENT" class="java.lang.String"/>
+	<field name="BUDGET_GROUP" class="java.lang.String"/>
+	<field name="ESTIMATED_COST" class="java.math.BigDecimal"/>
+	<field name="PERFORMANCE_PRESERVATION" class="java.lang.Double"/>
+	<variable name="TOTAL_LANE_MILES_1" class="java.lang.Double" resetType="Group" resetGroup="EA" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_LANE_MILES}]]></variableExpression>
+	</variable>
+	<variable name="ESTIMATED_COST_1" class="java.math.BigDecimal" resetType="Group" resetGroup="EA" calculation="Sum">
+		<variableExpression><![CDATA[$F{ESTIMATED_COST}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_LANE_MILES_2" class="java.lang.Double" resetType="Group" resetGroup="YEAR" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_LANE_MILES}]]></variableExpression>
+	</variable>
+	<variable name="ESTIMATED_COST_2" class="java.math.BigDecimal" resetType="Group" resetGroup="YEAR" calculation="Sum">
+		<variableExpression><![CDATA[$F{ESTIMATED_COST}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_LANE_MILES_3" class="java.lang.Double" resetType="Group" resetGroup="BUDGET_GROUP" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_LANE_MILES}]]></variableExpression>
+	</variable>
+	<variable name="ESTIMATED_COST_3" class="java.math.BigDecimal" resetType="Group" resetGroup="BUDGET_GROUP" calculation="Sum">
+		<variableExpression><![CDATA[$F{ESTIMATED_COST}]]></variableExpression>
+	</variable>
+	<group name="YEAR">
+		<groupExpression><![CDATA[$F{YEAR}]]></groupExpression>
+		<groupFooter>
+			<band height="16">
+				<textField>
+					<reportElement x="239" y="0" width="217" height="16"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["District "+$F{DISTRICT}+" "+$F{YEAR}+" Total"]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.000">
+					<reportElement x="456" y="0" width="89" height="16"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{TOTAL_LANE_MILES_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0">
+					<reportElement x="592" y="0" width="89" height="16"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ESTIMATED_COST_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="545" y="0" width="47" height="16"/>
+					<textElement>
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[  LM]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="BUDGET_GROUP">
+		<groupExpression><![CDATA[$F{BUDGET_GROUP}]]></groupExpression>
+		<groupFooter>
+			<band height="48">
+				<textField>
+					<reportElement x="328" y="0" width="128" height="16"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Prog. "+ $F{BUDGET_GROUP}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0" isBlankWhenNull="true">
+					<reportElement x="592" y="32" width="89" height="16"/>
+					<textElement>
+						<font size="8" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ESTIMATED_COST_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="$ #,##0" isBlankWhenNull="true">
+					<reportElement mode="Transparent" x="592" y="0" width="89" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement mode="Transparent" x="456" y="0" width="89" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+				</textField>
+				<textField>
+					<reportElement x="328" y="32" width="128" height="16"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Both "+$F{BUDGET_GROUP}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="239" y="0" width="89" height="48"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Totals]]></text>
+				</staticText>
+				<textField pattern="#,##0.000">
+					<reportElement x="456" y="16" width="89" height="16"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{TOTAL_LANE_MILES_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0">
+					<reportElement x="592" y="16" width="89" height="16"/>
+					<textElement>
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ESTIMATED_COST_3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="545" y="0" width="47" height="16"/>
+					<textElement>
+						<font size="8" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[  LM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="545" y="16" width="47" height="16"/>
+					<textElement>
+						<font size="8" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[  LM]]></text>
+				</staticText>
+				<textField pattern="#,##0.000">
+					<reportElement x="456" y="32" width="89" height="16"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{TOTAL_LANE_MILES_3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="545" y="32" width="47" height="16"/>
+					<textElement>
+						<font size="8" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[  LM]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="328" y="16" width="128" height="16"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="false" isItalic="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Recm'd "+$F{BUDGET_GROUP}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="EA">
+		<groupExpression><![CDATA[$F{EA}]]></groupExpression>
+		<groupHeader>
+			<band height="12">
+				<textField isBlankWhenNull="true">
+					<reportElement x="282" y="0" width="10" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{BPS} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="163" y="0" width="34" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{COUNTY}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="21" y="0" width="27" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{YEAR}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="292" y="0" width="10" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{EPP} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="48" y="0" width="57" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{EA}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="21" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{DISTRICT}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="245" y="0" width="37" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{BEG_PM} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="447" y="0" width="134" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TREATMENT}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="197" y="0" width="28" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ROUTE}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="372" y="0" width="22" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{LANE} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="302" y="0" width="37" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{END_PM} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="349" y="0" width="23" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{DIR} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="225" y="0" width="10" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{RS} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="339" y="0" width="10" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{EPS} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="581" y="0" width="56" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{BUDGET_GROUP}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="235" y="0" width="10" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{BPP} : null]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="105" y="0" width="58" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_PROJECTID}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="694" y="0" width="58" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$F{PERFORMANCE_PRESERVATION}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="EA" pattern="#,##0.000" isBlankWhenNull="true">
+					<reportElement x="394" y="0" width="53" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{TOTAL_LANE_MILES_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="EA" pattern="¤ #,##0" isBlankWhenNull="true">
+					<reportElement x="637" y="0" width="62" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ESTIMATED_COST_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="34">
+			<staticText>
+				<reportElement x="581" y="0" width="56" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Budget Group]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="21" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dist.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="163" y="0" width="34" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[County]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="0" width="10" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EPP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="349" y="0" width="23" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dir.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="0" width="10" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BPS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="447" y="0" width="134" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Treatment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="0" width="37" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[END_PM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="637" y="0" width="57" height="34"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[  Estimated Cost]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="0" width="22" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lane]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="0" width="58" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ProjectID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="197" y="0" width="28" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Route]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="48" y="0" width="57" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="0" width="53" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LaneMiles]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="0" width="37" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BEG_PM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="339" y="0" width="10" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EPS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="225" y="0" width="10" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="694" y="0" width="58" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Performance Preservation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="0" width="10" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BPP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="0" width="27" height="34"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Year]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{REC_COUNT}>1]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement x="581" y="0" width="56" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{BUDGET_GROUP}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="163" y="0" width="34" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{COUNTY}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="292" y="0" width="10" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{EPP}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="349" y="0" width="23" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DIR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="282" y="0" width="10" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{BPS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="447" y="0" width="134" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TREATMENT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="302" y="0" width="37" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{END_PM}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="637" y="0" width="57" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{REC_COUNT}>1 ? null : $F{ESTIMATED_COST}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="372" y="0" width="22" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LANE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="197" y="0" width="28" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ROUTE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="394" y="0" width="53" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{TOTAL_LANE_MILES}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="245" y="0" width="37" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{BEG_PM}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="339" y="0" width="10" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{EPS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="225" y="0" width="10" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="694" y="0" width="58" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{REC_COUNT}>1 ? null : $F{PERFORMANCE_PRESERVATION}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="0" width="10" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{BPP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
