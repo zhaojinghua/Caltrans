@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.210000000000014"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.6105100000000223"/>
+	<property name="ireport.x" value="462"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
@@ -77,19 +77,19 @@
 	<style name="budgetstyle">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "CAPM" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
-			<style mode="Opaque" forecolor="#333333" backcolor="#3399FF"/>
+			<style mode="Opaque" forecolor="#333333" backcolor="#F5F5DC"/>
 		</conditionalStyle>
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "Rehab" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
-			<style mode="Opaque" forecolor="#333333" backcolor="#FF9933"/>
+			<style mode="Opaque" forecolor="#333333" backcolor="#DB7093"/>
 		</conditionalStyle>
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "Corrective Maintenance" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
-			<style mode="Opaque" forecolor="#333333" backcolor="#00FF33"/>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFFF00"/>
 		</conditionalStyle>
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "Preventive Maintenance" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
-			<style mode="Opaque" forecolor="#333333" backcolor="#FF9999"/>
+			<style mode="Opaque" forecolor="#333333" backcolor="#00FF7F"/>
 		</conditionalStyle>
 	</style>
 	<parameter name="PMS_SCENARIO_ID" class="java.lang.Integer">
@@ -224,11 +224,8 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<groupExpression><![CDATA[$F{EFF_YEAR}+$F{CA_DISTRICT_NUM}]]></groupExpression>
 		<groupFooter>
 			<band height="12">
-				<rectangle>
-					<reportElement x="358" y="0" width="330" height="12" forecolor="#CCCCCC" backcolor="#CCFFFF"/>
-				</rectangle>
 				<textField>
-					<reportElement x="358" y="0" width="181" height="12"/>
+					<reportElement style="budgetstyle" x="358" y="0" width="181" height="12"/>
 					<box>
 						<leftPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -239,7 +236,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA["District "+$F{CA_DISTRICT_NUM}+" "+$F{EFF_YEAR}+" Total"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="539" y="0" width="89" height="12"/>
+					<reportElement style="budgetstyle" x="539" y="0" width="89" height="12"/>
 					<box>
 						<pen lineWidth="0.75"/>
 						<topPen lineWidth="0.0"/>
@@ -253,7 +250,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{WP_LANE_MILES_1}+" LM"]]></textFieldExpression>
 				</textField>
 				<textField pattern="$ #,##0">
-					<reportElement x="628" y="0" width="60" height="12"/>
+					<reportElement style="budgetstyle" x="628" y="0" width="60" height="12"/>
 					<box>
 						<bottomPen lineWidth="0.5"/>
 						<rightPen lineWidth="0.5"/>
@@ -270,18 +267,15 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<groupExpression><![CDATA[$F{PMS_BUDGET_CAT_ID}]]></groupExpression>
 		<groupFooter>
 			<band height="36">
-				<rectangle>
-					<reportElement x="358" y="0" width="330" height="36" forecolor="#CCCCCC" backcolor="#CCCCFF"/>
-				</rectangle>
 				<textField>
-					<reportElement x="422" y="12" width="117" height="12"/>
+					<reportElement style="budgetstyle" x="422" y="12" width="117" height="12"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Recm'd "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="422" y="0" width="117" height="12"/>
+					<reportElement style="budgetstyle" x="422" y="0" width="117" height="12"/>
 					<box>
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="0.5"/>
@@ -295,21 +289,21 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA["Prog. "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement x="539" y="24" width="89" height="12"/>
+					<reportElement style="budgetstyle" x="539" y="24" width="89" height="12"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{LANE_MILES_1}+" LM"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="422" y="24" width="117" height="12"/>
+					<reportElement style="budgetstyle" x="422" y="24" width="117" height="12"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Both "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="$ #,##0" isBlankWhenNull="true">
-					<reportElement x="628" y="24" width="60" height="12"/>
+					<reportElement style="budgetstyle" x="628" y="24" width="60" height="12"/>
 					<box>
 						<rightPen lineWidth="0.5"/>
 					</box>
@@ -319,7 +313,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROJECT_PRICE_1}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="358" y="0" width="64" height="36"/>
+					<reportElement style="budgetstyle" x="358" y="0" width="64" height="36"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<leftPen lineWidth="0.5"/>
@@ -330,7 +324,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<text><![CDATA[Totals]]></text>
 				</staticText>
 				<textField pattern="$ #,##0" isBlankWhenNull="true">
-					<reportElement mode="Transparent" x="628" y="12" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement style="budgetstyle" mode="Transparent" x="628" y="12" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<rightPen lineWidth="0.5"/>
 					</box>
@@ -340,7 +334,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{REC_COST_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="$ #,##0" isBlankWhenNull="true">
-					<reportElement mode="Transparent" x="628" y="0" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement style="budgetstyle" mode="Transparent" x="628" y="0" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<rightPen lineWidth="0.5"/>
@@ -351,7 +345,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROG_COST_1}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement mode="Transparent" x="539" y="0" width="89" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement style="budgetstyle" mode="Transparent" x="539" y="0" width="89" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 					</box>
@@ -361,7 +355,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{PROG_LM_1}+" LM"]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement mode="Transparent" x="539" y="12" width="86" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<reportElement style="budgetstyle" mode="Transparent" x="539" y="12" width="89" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 						<font fontName="SansSerif" size="8" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
@@ -374,11 +368,6 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<groupExpression><![CDATA[$F{CA_DISTRICT_NUM}+$F{EFF_YEAR}+$F{PMS_BUDGET_CAT_ID}+$F{CA_EA_NO}]]></groupExpression>
 		<groupHeader>
 			<band height="12">
-				<rectangle>
-					<reportElement x="0" y="0" width="752" height="12" forecolor="#CCCCCC" backcolor="#00E17F">
-						<printWhenExpression><![CDATA[$V{REPORT_COUNT}.intValue() % 2 ==0]]></printWhenExpression>
-					</reportElement>
-				</rectangle>
 				<textField isBlankWhenNull="true">
 					<reportElement x="46" y="0" width="49" height="12"/>
 					<box>
@@ -567,28 +556,15 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_RTE_SUFFIX_FROM} : null )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="422" y="0" width="117" height="12"/>
+					<reportElement mode="Opaque" x="422" y="0" width="117" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="false"/>
+						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{PMS_TREATMENT_ID} : null )]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="budgetstyle" x="539" y="0" width="89" height="12">
-						<printWhenExpression><![CDATA[$F{REC_COUNT} == 1]]></printWhenExpression>
-					</reportElement>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="false"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{PMS_BUDGET_CAT_ID} : null )]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{PMS_TREATMENT_ID} : null]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="yearstyle" x="28" y="0" width="18" height="12" isRemoveLineWhenBlank="true"/>
@@ -602,15 +578,15 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EFF_YEAR}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="539" y="0" width="89" height="12">
-						<printWhenExpression><![CDATA[$F{REC_COUNT} > 1]]></printWhenExpression>
-					</reportElement>
+					<reportElement style="budgetstyle" x="539" y="0" width="89" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement/>
-					<textFieldExpression class="java.lang.String"><![CDATA[]]></textFieldExpression>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -620,13 +596,6 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	</background>
 	<title>
 		<band height="30" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="128" height="30"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[EA Summary Report 1]]></text>
-			</staticText>
 			<textField pattern="MMMMM dd, yyyy">
 				<reportElement x="652" y="0" width="100" height="20"/>
 				<textElement>
@@ -635,18 +604,11 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="229" y="0" width="129" height="30"/>
+				<reportElement x="164" y="0" width="438" height="30"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Scenario Number: "]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="358" y="0" width="100" height="30"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PMS_SCENARIO_ID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "                                 " + "EA Summary Report 1"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -921,14 +883,14 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_TREATMENT_ID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="539" y="0" width="89" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="341" y="0" width="17" height="12"/>
@@ -959,6 +921,13 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{WP_LANE_MILES}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="421" y="0" width="118" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_TREATMENT_ID}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -968,12 +937,16 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement x="301" y="0" width="80" height="20"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="381" y="0" width="40" height="20"/>
-				<textElement/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
