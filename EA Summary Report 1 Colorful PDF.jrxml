@@ -16,9 +16,6 @@
 	<parameter name="BUDGET_MIN_SHOPP" class="java.lang.Double">
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
-	<parameter name="scenarionumber" class="java.lang.String">
-		<parameterDescription><![CDATA[Type the scenario number for the title!]]></parameterDescription>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT a.pms_scenario_id,(select count(*) from pms_analysis_scenario_wp wpc where a.pms_scenario_id=wpc.pms_scenario_id and a.ca_ea_no=wpc.ca_ea_no) as rec_count,
        a.eff_year,
@@ -502,7 +499,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Scenario Number: " + $P{scenarionumber}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Scenario Number: "]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
