@@ -7,7 +7,7 @@
 	<style name="yearstyle">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 0]]></conditionExpression>
-			<style mode="Opaque" forecolor="#333333" backcolor="#FAFAFA"/>
+			<style mode="Opaque" forecolor="#333333" backcolor="#33FF66"/>
 		</conditionalStyle>
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 1]]></conditionExpression>
@@ -604,11 +604,11 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="164" y="0" width="438" height="30"/>
-				<textElement>
+				<reportElement x="125" y="0" width="477" height="30"/>
+				<textElement textAlignment="Center">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "                                 " + "EA Summary Report 1"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "        " + "EA Summary Report 1"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
