@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.2100000000000108"/>
-	<property name="ireport.x" value="428"/>
+	<property name="ireport.zoom" value="1.3310000000000128"/>
+	<property name="ireport.x" value="598"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
@@ -230,7 +230,8 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textField>
 					<reportElement x="358" y="0" width="181" height="12"/>
 					<box>
-						<leftPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isBold="true" isItalic="true"/>
@@ -239,6 +240,13 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="539" y="0" width="89" height="12"/>
+					<box>
+						<pen lineWidth="0.75"/>
+						<topPen lineWidth="0.75"/>
+						<leftPen lineWidth="0.75"/>
+						<bottomPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="true" isItalic="true"/>
 					</textElement>
@@ -247,7 +255,8 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textField pattern="$ #,##0">
 					<reportElement x="628" y="0" width="60" height="12"/>
 					<box>
-						<rightPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.75"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isBold="true" isItalic="true"/>
@@ -273,6 +282,9 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				</textField>
 				<textField>
 					<reportElement x="422" y="0" width="117" height="12"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
@@ -295,7 +307,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textField isStretchWithOverflow="true" pattern="$ #,##0" isBlankWhenNull="true">
 					<reportElement x="628" y="24" width="60" height="12"/>
 					<box>
-						<rightPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.75"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
@@ -305,6 +317,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<staticText>
 					<reportElement x="358" y="0" width="64" height="36"/>
 					<box>
+						<topPen lineWidth="0.75"/>
 						<leftPen lineWidth="0.75"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -315,7 +328,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textField pattern="$ #,##0" isBlankWhenNull="true">
 					<reportElement mode="Transparent" x="628" y="12" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
-						<rightPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.75"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 						<font fontName="SansSerif" size="8" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -325,7 +338,8 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textField pattern="$ #,##0" isBlankWhenNull="true">
 					<reportElement mode="Transparent" x="628" y="0" width="60" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 					<box>
-						<rightPen lineWidth="0.5"/>
+						<topPen lineWidth="0.75"/>
+						<rightPen lineWidth="0.75"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 						<font fontName="SansSerif" size="8" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -334,6 +348,9 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
 					<reportElement mode="Transparent" x="539" y="0" width="89" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 						<font fontName="SansSerif" size="8" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
