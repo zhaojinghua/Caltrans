@@ -57,8 +57,7 @@
 			<style mode="Opaque" forecolor="#333333" backcolor="#FFFFF0"/>
 		</conditionalStyle>
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{YEAR} % 2013 == 13
-]]></conditionExpression>
+			<conditionExpression><![CDATA[$F{YEAR} % 2013 == 13]]></conditionExpression>
 			<style mode="Opaque" forecolor="#333333" backcolor="#FFF8DC"/>
 		</conditionalStyle>
 		<conditionalStyle>
