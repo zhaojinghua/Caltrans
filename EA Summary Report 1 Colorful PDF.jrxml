@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.6105100000000223"/>
-	<property name="ireport.x" value="172"/>
+	<property name="ireport.zoom" value="1.3310000000000202"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
@@ -244,7 +244,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 						<bottomPen lineWidth="0.5"/>
 						<rightPen lineWidth="0.0"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isBold="true" isItalic="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{WP_LANE_MILES_1}+" LM"]]></textFieldExpression>
@@ -290,7 +290,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
 					<reportElement style="budgetstyle" x="539" y="24" width="89" height="12"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{LANE_MILES_1}+" LM"]]></textFieldExpression>
@@ -323,7 +323,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					</textElement>
 					<text><![CDATA[Totals]]></text>
 				</staticText>
-				<textField>
+				<textField pattern="###0.000">
 					<reportElement style="budgetstyle" x="539" y="0" width="89" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
@@ -333,14 +333,24 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{PROG_LM_1}+" LM"]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="###0.000">
 					<reportElement style="budgetstyle" x="539" y="12" width="89" height="12"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{REC_LM_1}+" LM"]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="#,##0">
+					<reportElement style="budgetstyle" x="628" y="12" width="60" height="12"/>
+					<box>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{REC_COST_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
 					<reportElement style="budgetstyle" x="628" y="0" width="60" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
@@ -349,17 +359,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$V{PROG_COST_1}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement style="budgetstyle" x="628" y="12" width="60" height="12"/>
-					<box>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$V{REC_COST_1}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROG_COST_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
