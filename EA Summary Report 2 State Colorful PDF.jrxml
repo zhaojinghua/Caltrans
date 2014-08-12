@@ -212,9 +212,9 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Total "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
 				</textField>
-				<textField pattern="$ #,##0" isBlankWhenNull="true">
-					<reportElement style="budgetstyle" x="637" y="0" width="60" height="12"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textField pattern="#,##0">
+					<reportElement x="637" y="0" width="60" height="12"/>
+					<textElement textAlignment="Right">
 						<font size="8" isItalic="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{WP_PROJECT_PRICE_1}]]></textFieldExpression>
