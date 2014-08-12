@@ -150,6 +150,8 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        AND lwp.sourse_table = 'PMS_ANALYSIS_SCENARIO_WP'
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
+       and a.eff_year <> 2013
+       and a.eff_year <> 2014
        order by a.pms_scenario_id,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
        a.eff_year,

@@ -73,8 +73,8 @@
 			<style mode="Opaque" forecolor="#333333" backcolor="#6666FF"/>
 		</conditionalStyle>
 	</style>
-	<queryString language="SQL">
-		<![CDATA[select * from year]]>
+	<queryString>
+		<![CDATA[select * from year where year <> 2013 and year <> 2014 order by year]]>
 	</queryString>
 	<field name="YEAR" class="java.lang.Integer"/>
 	<background>
