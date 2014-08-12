@@ -1,9 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.2100000000000053"/>
+	<property name="ireport.zoom" value="1.4641000000000068"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<style name="yearstyle">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#33FF66"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 1]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#E6E6FA"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 2]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFFFE0"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 3]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#00FFFF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 4]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#009999"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 5]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#D3D3D3"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 6]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFA07A"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 7]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFEFD5"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 8]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#00FF7F"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 9]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#AFEEEE"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 10]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#E6E6FA"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 11]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFC0CB"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 12]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFFFF0"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 13]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFF8DC"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 14]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#00FFCC"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 15]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FF99CC"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{EFF_YEAR} % 2013 == 16]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#6666FF"/>
+		</conditionalStyle>
+	</style>
+	<style name="budgetstyle">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "CAPM" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#F5F5DC"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "Rehab" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#DB7093"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "Corrective Maintenance" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#FFFF00"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{PMS_BUDGET_CAT_ID} == "Preventive Maintenance" && $F{PMS_SCENARIO_ID} != null]]></conditionExpression>
+			<style mode="Opaque" forecolor="#333333" backcolor="#00FF7F"/>
+		</conditionalStyle>
+	</style>
 	<parameter name="PMS_SCENARIO_ID" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -374,13 +462,6 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	</background>
 	<title>
 		<band height="30" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="128" height="30"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[EA Summary Report 2]]></text>
-			</staticText>
 			<textField pattern="MMMMM dd, yyyy">
 				<reportElement x="651" y="0" width="100" height="20"/>
 				<textElement>
@@ -389,11 +470,11 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="266" y="0" width="189" height="30"/>
+				<reportElement x="142" y="0" width="470" height="30"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Scenario Number: "]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "        " + "EA Summary Report 1"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
