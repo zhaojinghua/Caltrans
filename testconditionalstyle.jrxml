@@ -102,6 +102,13 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{YEAR}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="309" y="0" width="59" height="18"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ABC, EFG, HJK]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
