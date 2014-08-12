@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.7715610000000286"/>
-	<property name="ireport.x" value="46"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
@@ -595,27 +595,12 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="30" splitType="Stretch">
-			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="652" y="0" width="100" height="20"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="114" y="0" width="525" height="30"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "        " + "EA Summary Report 1"]]></textFieldExpression>
-			</textField>
-		</band>
+		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="20" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<staticText>
-				<reportElement x="28" y="0" width="18" height="20"/>
+				<reportElement x="28" y="30" width="18" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -625,7 +610,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Year]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="46" y="0" width="49" height="20"/>
+				<reportElement x="46" y="30" width="49" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -635,7 +620,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[EA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="28" height="20"/>
+				<reportElement x="0" y="30" width="28" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -645,7 +630,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Dist.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="95" y="0" width="54" height="20"/>
+				<reportElement x="95" y="30" width="54" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -655,7 +640,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[ProjectID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="149" y="0" width="28" height="20"/>
+				<reportElement x="149" y="30" width="28" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -665,7 +650,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[County]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="177" y="0" width="23" height="20"/>
+				<reportElement x="177" y="30" width="23" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -675,7 +660,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Route]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="12" height="20"/>
+				<reportElement x="200" y="30" width="12" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -685,7 +670,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[RS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="212" y="0" width="17" height="20"/>
+				<reportElement x="212" y="30" width="17" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -695,7 +680,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[BPP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="229" y="0" width="31" height="20"/>
+				<reportElement x="229" y="30" width="31" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -705,7 +690,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Beg PM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="260" y="0" width="17" height="20"/>
+				<reportElement x="260" y="30" width="17" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -715,7 +700,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[BPS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="277" y="0" width="17" height="20"/>
+				<reportElement x="277" y="30" width="17" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -725,7 +710,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[EPP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="294" y="0" width="30" height="20"/>
+				<reportElement x="294" y="30" width="30" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -735,7 +720,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[End PM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="324" y="0" width="17" height="20"/>
+				<reportElement x="324" y="30" width="17" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -745,7 +730,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[EPS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="383" y="0" width="44" height="20"/>
+				<reportElement x="383" y="30" width="44" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -755,7 +740,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Lane Miles]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="427" y="0" width="117" height="20"/>
+				<reportElement x="427" y="30" width="117" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -765,7 +750,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Treatment]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="544" y="0" width="84" height="20"/>
+				<reportElement x="544" y="30" width="84" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -775,7 +760,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Budget Group]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="628" y="0" width="60" height="20"/>
+				<reportElement x="628" y="30" width="60" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -785,7 +770,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Estimated Cost]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="688" y="0" width="64" height="20"/>
+				<reportElement x="688" y="30" width="64" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -795,7 +780,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Performance-Preservation]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="341" y="0" width="22" height="20"/>
+				<reportElement x="341" y="30" width="22" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -805,7 +790,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[DIR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="363" y="0" width="20" height="20"/>
+				<reportElement x="363" y="30" width="20" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -814,6 +799,20 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				</textElement>
 				<text><![CDATA[Lane]]></text>
 			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="652" y="0" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="115" y="0" width="525" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "        " + "EA Summary Report 1"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
