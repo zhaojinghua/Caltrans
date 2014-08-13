@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.593742460100044"/>
-	<property name="ireport.x" value="1327"/>
+	<property name="ireport.x" value="773"/>
 	<property name="ireport.y" value="34"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
@@ -190,7 +190,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	<field name="CA_POSTMILE_END" class="java.math.BigDecimal"/>
 	<field name="CA_PM_SUFFIX_TO" class="java.lang.String"/>
 	<field name="LANE_DIR" class="java.lang.String"/>
-	<field name="LANE_ID" class="java.math.BigDecimal"/>
+	<field name="LANE_ID" class="java.lang.String"/>
 	<field name="OFFSET_FROM" class="java.math.BigDecimal"/>
 	<field name="WP_LANE_MILES" class="java.math.BigDecimal"/>
 	<field name="WP_PROJECT_PRICE" class="java.math.BigDecimal"/>
@@ -465,7 +465,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[( $F{REC_COUNT}==1 ? $F{LANE_ID} : null )]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? ($F{LANE_ID}=="0" ? "All" : $F{LANE_ID}) : null )]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement stretchType="RelativeToTallestObject" x="219" y="0" width="31" height="12"/>
@@ -889,7 +889,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{LANE_ID}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LANE_ID}=="0" ? "All" : $F{LANE_ID}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="139" y="0" width="28" height="12"/>
