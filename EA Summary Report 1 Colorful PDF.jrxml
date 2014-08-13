@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.593742460100044"/>
-	<property name="ireport.x" value="773"/>
-	<property name="ireport.y" value="34"/>
+	<property name="ireport.zoom" value="1.3310000000000224"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
 		<conditionalStyle>
@@ -105,7 +105,9 @@
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT a.pms_scenario_id,(select count(*) from pms_analysis_scenario_wp wpc where a.pms_scenario_id=wpc.pms_scenario_id and a.ca_ea_no=wpc.ca_ea_no) as rec_count,
+		<![CDATA[SELECT a.pms_scenario_id,
+       b.pms_scenario_name,
+       (select count(*) from pms_analysis_scenario_wp wpc where a.pms_scenario_id=wpc.pms_scenario_id and a.ca_ea_no=wpc.ca_ea_no) as rec_count,
        a.eff_year,
        a.ca_ea_no,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)) AS ca_district_num,
@@ -139,7 +141,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        wp.project_price as wp_project_price,
        10000*wp.CA_BENEFIT_PRES_DIFF*wp.LANE_MILES/wp.PROJECT_PRICE as wp_benefit_pres,
        (select s.MWP_PROJECT_STATUS_NAME  from setup_MWP_PROJECT_STATUS s where wp.MWP_PROJECT_STATUS_ID=s.MWP_PROJECT_STATUS_ID) as MWP_PROJECT_STATUS_ID
-  FROM ca_ea_benefit_vw a, pms_analysis_scenario_wp wp, setup_loc_ident lwp, setup_ca_county c
+  FROM ca_ea_benefit_vw a, pms_analysis_scenario_wp wp, pms_analysis_scenario b, setup_loc_ident lwp, setup_ca_county c
  WHERE     a.pms_scenario_id = wp.pms_scenario_id
                 AND ((wp.mwp_project_status_id = 1 AND a.lane_miles >= $P{LANE_MILE_MIN}
               AND ( (a.pms_budget_cat_id IN (1, 8) AND a.project_price >= $P{BUDGET_MIN_HM})
@@ -150,6 +152,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        AND lwp.sourse_table = 'PMS_ANALYSIS_SCENARIO_WP'
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
+       and a.pms_scenario_id = b.pms_scenario_id
        order by a.pms_scenario_id,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
        a.eff_year,
@@ -196,6 +199,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	<field name="WP_PROJECT_PRICE" class="java.math.BigDecimal"/>
 	<field name="WP_BENEFIT_PRES" class="java.math.BigDecimal"/>
 	<field name="MWP_PROJECT_STATUS_ID" class="java.lang.String"/>
+	<field name="pms_scenario_name" class="java.lang.String"/>
 	<variable name="LANE_MILES_1" class="java.math.BigDecimal" resetType="Group" resetGroup="BudgetCat" calculation="Sum">
 		<variableExpression><![CDATA[$F{WP_LANE_MILES}]]></variableExpression>
 	</variable>
@@ -807,11 +811,11 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="115" y="0" width="525" height="30"/>
+				<reportElement x="0" y="0" width="640" height="30"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "        " + "EA Summary Report 1"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "    " + $F{pms_scenario_name} + "    " + "EA Summary Report 1"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
