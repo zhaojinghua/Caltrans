@@ -35,24 +35,13 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        10000*wp.CA_BENEFIT_PRES_DIFF*wp.LANE_MILES/wp.PROJECT_PRICE as wp_benefit_pres,
        (select s.MWP_PROJECT_STATUS_NAME  from setup_MWP_PROJECT_STATUS s where wp.MWP_PROJECT_STATUS_ID=s.MWP_PROJECT_STATUS_ID) as MWP_PROJECT_STATUS_ID
   FROM ca_ea_benefit_vw a, pms_analysis_scenario_wp wp, pms_analysis_scenario b, setup_loc_ident lwp, setup_ca_county c
- WHERE     a.pms_scenario_id = wp.pms_scenario_id
-                AND ((wp.mwp_project_status_id = 1 AND a.lane_miles >= $P{LANE_MILE_MIN}
-              AND ( (a.pms_budget_cat_id IN (1, 8) AND a.project_price >= $P{BUDGET_MIN_HM})
-                   OR (a.pms_budget_cat_id IN (2, 5) AND a.project_price >= $P{BUDGET_MIN_SHOPP})))
-                   OR wp.mwp_project_status_id <> 1
-                   )
+ WHERE     a.pms_scenario_id = wp.pms_scenario_id and wp.MWP_PROJECT_STATUS_ID<>1
        AND wp.loc_ident = lwp.loc_ident and LWP.CA_COUNTY_FROM=C.CA_COUNTY_ID
        AND lwp.sourse_table = 'PMS_ANALYSIS_SCENARIO_WP'
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
        and a.pms_scenario_id = b.pms_scenario_id
        order by a.pms_scenario_id,
-       TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
-       a.eff_year,
        decode(a.pms_budget_cat_id,8,1,1,2,5,3,2,4,10),
-       a.ca_ea_no,
-       C.CA_COUNTY_ABBREV,
-       lwp.ca_route_from,
-       lwp.offset_from,
-       lwp.lane_dir,
-       lwp.lane_id
+       10000 * a.ca_benefit_pres desc,
+       TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2))
