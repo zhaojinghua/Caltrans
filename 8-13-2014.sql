@@ -23,5 +23,5 @@ select (select count(*) from s1318 ee where ee.ea=eee.ea) as rec_count,
     from s1318 eee order by ea; 
     
     select distinct mwp_project_status from s1318;
-    
+    select distinct lane from s1318;
     
