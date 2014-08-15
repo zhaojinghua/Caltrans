@@ -104,9 +104,6 @@
 	<parameter name="BUDGET_MIN_SHOPP" class="java.lang.Double">
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
-	<parameter name="YEARFILTER" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[2013]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT a.pms_scenario_id,
        b.pms_scenario_name,
@@ -156,7 +153,8 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
        and a.pms_scenario_id = b.pms_scenario_id
-       and a.eff_year <> $P{YEARFILTER}
+       and a.eff_year <> EXTRACT(YEAR FROM sysdate)
+       and a.eff_year <> (EXTRACT(YEAR FROM sysdate) - 1)
        order by a.pms_scenario_id,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
        a.eff_year,
