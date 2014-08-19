@@ -797,7 +797,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="236" height="20"/>
+				<reportElement x="0" y="0" width="268" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Sorted by Budget Group, Performance-Preservation. ]]></text>
 			</staticText>
