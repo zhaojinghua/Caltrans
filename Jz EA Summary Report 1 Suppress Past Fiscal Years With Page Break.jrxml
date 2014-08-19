@@ -153,7 +153,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
        and a.pms_scenario_id = b.pms_scenario_id
-       and a.eff_year >= (EXTRACT(YEAR FROM sysdate) +  SIGN(TO_CHAR(sysdate, 'MM'))
+       and a.eff_year >= (EXTRACT(YEAR FROM sysdate) +  DECODE(SIGN(TO_CHAR(sysdate, 'MM') - 6), -1, -1,  0, 0, 1, 1))
        order by a.pms_scenario_id,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
        a.eff_year,
@@ -942,6 +942,11 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="190" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sorted by Dist., Year, and Budget Group.  ]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="792" pageHeight="1224" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.6105100000000274"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.143588810000012"/>
+	<property name="ireport.x" value="45"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
@@ -95,18 +95,6 @@
 	<parameter name="PMS_SCENARIO_ID" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="LANE_MILE_MIN" class="java.lang.Double">
-		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
-	</parameter>
-	<parameter name="BUDGET_MIN_HM" class="java.lang.Double">
-		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
-	</parameter>
-	<parameter name="BUDGET_MIN_SHOPP" class="java.lang.Double">
-		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
-	</parameter>
-	<parameter name="YEARFILTER" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[2013]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT a.pms_scenario_id,
        b.pms_scenario_name,
@@ -145,28 +133,17 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        10000*wp.CA_BENEFIT_PRES_DIFF*wp.LANE_MILES/wp.PROJECT_PRICE as wp_benefit_pres,
        (select s.MWP_PROJECT_STATUS_NAME  from setup_MWP_PROJECT_STATUS s where wp.MWP_PROJECT_STATUS_ID=s.MWP_PROJECT_STATUS_ID) as MWP_PROJECT_STATUS_ID
   FROM ca_ea_benefit_vw a, pms_analysis_scenario_wp wp, pms_analysis_scenario b, setup_loc_ident lwp, setup_ca_county c
- WHERE     a.pms_scenario_id = wp.pms_scenario_id
-                AND ((wp.mwp_project_status_id = 1 AND a.lane_miles >= $P{LANE_MILE_MIN}
-              AND ( (a.pms_budget_cat_id IN (1, 8) AND a.project_price >= $P{BUDGET_MIN_HM})
-                   OR (a.pms_budget_cat_id IN (2, 5) AND a.project_price >= $P{BUDGET_MIN_SHOPP})))
-                   OR wp.mwp_project_status_id <> 1
-                   )
+ WHERE     a.pms_scenario_id = wp.pms_scenario_id and wp.MWP_PROJECT_STATUS_ID<>1
        AND wp.loc_ident = lwp.loc_ident and LWP.CA_COUNTY_FROM=C.CA_COUNTY_ID
        AND lwp.sourse_table = 'PMS_ANALYSIS_SCENARIO_WP'
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
        and a.pms_scenario_id = b.pms_scenario_id
-       and a.eff_year <> $P{YEARFILTER}
+       and a.eff_year >= (EXTRACT(YEAR FROM sysdate) +  DECODE(SIGN(TO_CHAR(sysdate, 'MM') - 6), -1, -1,  0, 0, 1, 1))
        order by a.pms_scenario_id,
-       TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
-       a.eff_year,
        decode(a.pms_budget_cat_id,8,1,1,2,5,3,2,4,10),
-       a.ca_ea_no,
-       C.CA_COUNTY_ABBREV,
-       lwp.ca_route_from,
-       lwp.offset_from,
-       lwp.lane_dir,
-       lwp.lane_id]]>
+       10000 * a.ca_benefit_pres desc,
+       TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2))]]>
 	</queryString>
 	<field name="PMS_SCENARIO_ID" class="java.math.BigDecimal"/>
 	<field name="REC_COUNT" class="java.math.BigDecimal"/>
@@ -207,15 +184,6 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	<variable name="LANE_MILES_1" class="java.math.BigDecimal" resetType="Group" resetGroup="BudgetCat" calculation="Sum">
 		<variableExpression><![CDATA[$F{WP_LANE_MILES}]]></variableExpression>
 	</variable>
-	<variable name="PROJECT_PRICE_1" class="java.math.BigDecimal" resetType="Group" resetGroup="BudgetCat" calculation="Sum">
-		<variableExpression><![CDATA[$F{WP_PROJECT_PRICE}]]></variableExpression>
-	</variable>
-	<variable name="WP_LANE_MILES_1" class="java.math.BigDecimal" resetType="Group" resetGroup="YearDistrict" calculation="Sum">
-		<variableExpression><![CDATA[$F{WP_LANE_MILES}]]></variableExpression>
-	</variable>
-	<variable name="WP_PROJECT_PRICE_1" class="java.math.BigDecimal" resetType="Group" resetGroup="YearDistrict" calculation="Sum">
-		<variableExpression><![CDATA[$F{WP_PROJECT_PRICE}]]></variableExpression>
-	</variable>
 	<variable name="REC_COST_1" class="java.math.BigDecimal" resetType="Group" resetGroup="BudgetCat" calculation="Sum">
 		<variableExpression><![CDATA[$F{REC_COST}]]></variableExpression>
 	</variable>
@@ -228,146 +196,33 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	<variable name="REC_LM_1" class="java.math.BigDecimal" resetType="Group" resetGroup="BudgetCat" calculation="Sum">
 		<variableExpression><![CDATA[$F{REC_LM}]]></variableExpression>
 	</variable>
-	<group name="YearDistrict">
-		<groupExpression><![CDATA[$F{EFF_YEAR}+$F{CA_DISTRICT_NUM}]]></groupExpression>
-		<groupFooter>
-			<band height="12">
-				<textField>
-					<reportElement style="budgetstyle" x="358" y="0" width="181" height="12"/>
-					<box>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8" isBold="true" isItalic="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["District "+$F{CA_DISTRICT_NUM}+" "+$F{EFF_YEAR}+" Total"]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement style="budgetstyle" x="539" y="0" width="89" height="12"/>
-					<box>
-						<pen lineWidth="0.75"/>
-						<topPen lineWidth="0.0"/>
-						<leftPen lineWidth="0.0"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.0"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8" isBold="true" isItalic="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$V{WP_LANE_MILES_1}+" LM"]]></textFieldExpression>
-				</textField>
-				<textField pattern="$ #,##0">
-					<reportElement style="budgetstyle" x="628" y="0" width="72" height="12"/>
-					<box>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8" isBold="true" isItalic="true"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{WP_PROJECT_PRICE_1}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
+	<variable name="WP_PROJECT_PRICE_1" class="java.math.BigDecimal" resetType="Group" resetGroup="BudgetCat" calculation="Sum">
+		<variableExpression><![CDATA[$F{WP_PROJECT_PRICE}]]></variableExpression>
+	</variable>
 	<group name="BudgetCat">
 		<groupExpression><![CDATA[$F{PMS_BUDGET_CAT_ID}]]></groupExpression>
 		<groupFooter>
-			<band height="36">
-				<textField>
-					<reportElement style="budgetstyle" x="422" y="12" width="117" height="12"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8" isItalic="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Recm'd "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement style="budgetstyle" x="422" y="0" width="117" height="12"/>
-					<box>
-						<pen lineWidth="0.0"/>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.0"/>
-						<bottomPen lineWidth="0.0"/>
-						<rightPen lineWidth="0.0"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8" isItalic="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Prog. "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
-				</textField>
+			<band height="12">
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement style="budgetstyle" x="539" y="24" width="89" height="12"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+					<reportElement style="budgetstyle" x="581" y="0" width="56" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{LANE_MILES_1}+" LM"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement style="budgetstyle" x="422" y="24" width="117" height="12"/>
+					<reportElement style="budgetstyle" x="436" y="0" width="145" height="12"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["Both "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total "+$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="$ #,##0" isBlankWhenNull="true">
-					<reportElement style="budgetstyle" x="628" y="24" width="72" height="12"/>
-					<box>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textField pattern="$ #,##0">
+					<reportElement style="budgetstyle" x="637" y="0" width="74" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isItalic="true"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROJECT_PRICE_1}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement style="budgetstyle" x="358" y="0" width="64" height="36"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[Totals]]></text>
-				</staticText>
-				<textField pattern="###0.000">
-					<reportElement style="budgetstyle" x="539" y="0" width="89" height="12"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$V{PROG_LM_1}+" LM"]]></textFieldExpression>
-				</textField>
-				<textField pattern="###0.000">
-					<reportElement style="budgetstyle" x="539" y="12" width="89" height="12"/>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$V{REC_LM_1}+" LM"]]></textFieldExpression>
-				</textField>
-				<textField pattern="$ #,##0">
-					<reportElement style="budgetstyle" x="628" y="12" width="72" height="12"/>
-					<box>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{REC_COST_1}]]></textFieldExpression>
-				</textField>
-				<textField pattern="$ #,##0">
-					<reportElement style="budgetstyle" x="628" y="0" width="72" height="12"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Right">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{PROG_COST_1}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{WP_PROJECT_PRICE_1}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -377,7 +232,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<groupHeader>
 			<band height="12">
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="36" y="0" width="49" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="46" y="0" width="60" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -388,7 +243,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_EA_NO}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="18" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="28" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -399,7 +254,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CA_DISTRICT_NUM}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="85" y="0" width="54" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="106" y="0" width="79" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -410,29 +265,29 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_PROJECTID}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="139" y="0" width="28" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="185" y="0" width="28" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_COUNTY_NAME}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="167" y="0" width="23" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="213" y="0" width="23" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_ROUTE_FROM}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="373" y="0" width="44" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="436" y="0" width="39" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -443,18 +298,18 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{LANE_MILES}]]></textFieldExpression>
 				</textField>
 				<textField pattern="$ #,##0" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="652" y="0" width="48" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="637" y="0" width="60" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PROJECT_PRICE}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="700" y="0" width="52" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="697" y="0" width="54" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -465,7 +320,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CA_BENEFIT_PRES}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="353" y="0" width="20" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="414" y="0" width="22" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -476,18 +331,18 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? ($F{LANE_ID}=="0" ? "All" : $F{LANE_ID}) : null )]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="219" y="0" width="31" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="268" y="0" width="30" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_POSTMILE_BEG} : null )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="331" y="0" width="22" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="390" y="0" width="24" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -498,73 +353,51 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{LANE_DIR} : null )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="314" y="0" width="17" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="370" y="0" width="20" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_PM_SUFFIX_TO} : null )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="267" y="0" width="17" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="318" y="0" width="20" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_PM_PREFIX_TO} : null )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="202" y="0" width="17" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="248" y="0" width="20" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_PM_PREFIX_FROM} : null )]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="284" y="0" width="30" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="338" y="0" width="32" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_POSTMILE_END} : null )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="250" y="0" width="17" height="12"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_PM_SUFFIX_FROM} : null )]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" x="190" y="0" width="12" height="12"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_RTE_SUFFIX_FROM} : null )]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="417" y="0" width="131" height="12"/>
+					<reportElement stretchType="RelativeToTallestObject" x="298" y="0" width="20" height="12"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -572,10 +405,43 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{REC_COUNT}==1 ? $F{PMS_TREATMENT_ID} : null]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_PM_SUFFIX_FROM} : null )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="yearstyle" stretchType="RelativeToTallestObject" x="18" y="0" width="18" height="12" isRemoveLineWhenBlank="true"/>
+					<reportElement stretchType="RelativeToTallestObject" x="236" y="0" width="12" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{CA_RTE_SUFFIX_FROM} : null )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToTallestObject" x="475" y="0" width="106" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[( $F{REC_COUNT}==1 ? $F{PMS_TREATMENT_ID} : null )]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="budgetstyle" stretchType="RelativeToTallestObject" x="581" y="0" width="56" height="12"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="yearstyle" stretchType="RelativeToTallestObject" mode="Opaque" x="28" y="0" width="18" height="12" isRemoveLineWhenBlank="true"/>
 					<box>
 						<topPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -584,17 +450,6 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{EFF_YEAR}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement style="budgetstyle" stretchType="RelativeToTallestObject" x="548" y="0" width="104" height="12"/>
-					<box>
-						<topPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_BUDGET_CAT_ID}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -606,9 +461,9 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="50" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<staticText>
-				<reportElement x="18" y="30" width="18" height="20"/>
+				<reportElement x="28" y="31" width="18" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -618,7 +473,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Year]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="36" y="30" width="49" height="20"/>
+				<reportElement x="46" y="31" width="60" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -628,7 +483,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[EA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="30" width="18" height="20"/>
+				<reportElement x="0" y="31" width="28" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -638,7 +493,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Dist.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="85" y="30" width="54" height="20"/>
+				<reportElement x="106" y="31" width="79" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -648,7 +503,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[ProjectID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="139" y="30" width="28" height="20"/>
+				<reportElement x="185" y="31" width="28" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -658,7 +513,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[County]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="167" y="30" width="23" height="20"/>
+				<reportElement x="213" y="31" width="23" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -668,7 +523,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Route]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="190" y="30" width="12" height="20"/>
+				<reportElement x="236" y="31" width="12" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -678,17 +533,17 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[RS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="202" y="30" width="17" height="20"/>
+				<reportElement x="248" y="31" width="20" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BPP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="219" y="30" width="31" height="20"/>
+				<reportElement x="268" y="31" width="30" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -698,27 +553,27 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Beg PM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="250" y="30" width="17" height="20"/>
+				<reportElement x="298" y="31" width="20" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BPS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="267" y="30" width="17" height="20"/>
+				<reportElement x="318" y="31" width="20" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[EPP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="284" y="30" width="30" height="20"/>
+				<reportElement x="338" y="31" width="32" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -728,27 +583,27 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[End PM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="314" y="30" width="17" height="20"/>
+				<reportElement x="370" y="31" width="20" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[EPS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="373" y="30" width="44" height="20"/>
+				<reportElement x="436" y="31" width="39" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Lane Miles]]></text>
+				<text><![CDATA[LaneMiles]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="417" y="30" width="131" height="20"/>
+				<reportElement x="475" y="31" width="106" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -758,17 +613,17 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Treatment]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="548" y="30" width="104" height="20"/>
+				<reportElement x="581" y="31" width="56" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Budget Group]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="652" y="30" width="48" height="20"/>
+				<reportElement x="637" y="31" width="60" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -778,17 +633,17 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[Estimated Cost]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="700" y="30" width="52" height="20"/>
+				<reportElement x="697" y="31" width="54" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Performance-Preservation]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="331" y="30" width="22" height="20"/>
+				<reportElement x="390" y="31" width="24" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
@@ -798,11 +653,11 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<text><![CDATA[DIR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="353" y="30" width="20" height="20"/>
+				<reportElement x="414" y="31" width="22" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.75"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Lane]]></text>
@@ -815,11 +670,11 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="640" height="30"/>
+				<reportElement x="0" y="0" width="637" height="31"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "    " + $F{pms_scenario_name} + "    " + "EA Summary Report 1"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Scenario - " + $F{PMS_SCENARIO_ID} + "    " + $F{pms_scenario_name} + "    " + "EA Summary Report 2"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -830,96 +685,96 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 		<band height="12" splitType="Stretch">
 			<printWhenExpression><![CDATA[$F{REC_COUNT}>1]]></printWhenExpression>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="167" y="0" width="23" height="12"/>
+				<reportElement stretchType="RelativeToTallestObject" x="213" y="0" width="23" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{LOC_ROUTE}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="190" y="0" width="12" height="12"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="236" y="0" width="12" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_RTE_SUFFIX_FROM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="202" y="0" width="17" height="12"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="248" y="0" width="20" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_PM_PREFIX_FROM}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="219" y="0" width="31" height="12"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="268" y="0" width="30" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CA_POSTMILE_BEG}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="250" y="0" width="17" height="12"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="298" y="0" width="20" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_PM_SUFFIX_FROM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="267" y="0" width="17" height="12"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="318" y="0" width="20" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_PM_PREFIX_TO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="284" y="0" width="30" height="12"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="338" y="0" width="32" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CA_POSTMILE_END}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="314" y="0" width="17" height="12"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="370" y="0" width="20" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_PM_SUFFIX_TO}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="475" y="0" width="106" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_TREATMENT_ID}]]></textFieldExpression>
+			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="331" y="0" width="22" height="12"/>
+				<reportElement stretchType="RelativeToTallestObject" x="390" y="0" width="24" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{LANE_DIR}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="353" y="0" width="20" height="12"/>
+				<reportElement stretchType="RelativeToTallestObject" x="414" y="0" width="22" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{LANE_ID}=="0" ? "All" : $F{LANE_ID}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="139" y="0" width="28" height="12"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement stretchType="RelativeToTallestObject" x="185" y="0" width="28" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CA_COUNTY_FROM}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="373" y="0" width="44" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="436" y="0" width="39" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box rightPadding="0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{WP_LANE_MILES}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="417" y="0" width="131" height="12"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{PMS_TREATMENT_ID}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -929,23 +784,23 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="301" y="0" width="80" height="20"/>
+				<reportElement x="303" y="0" width="80" height="20"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="381" y="0" width="40" height="20"/>
+				<reportElement x="383" y="0" width="40" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="0" width="190" height="20"/>
+				<reportElement x="0" y="0" width="236" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Sorted by Dist., Year, and Budget Group.  ]]></text>
+				<text><![CDATA[Sorted by Budget Group, Performance-Preservation. ]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
