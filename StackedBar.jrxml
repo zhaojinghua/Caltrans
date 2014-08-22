@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StackedBar" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     EXCEL."YEAR" AS EXCEL_YEAR,
+     EXCEL."COUNTY" AS EXCEL_COUNTY,
+     EXCEL."ROUTE" AS EXCEL_ROUTE,
+     EXCEL."BEG_PM" AS EXCEL_BEG_PM,
+     EXCEL."END_PM" AS EXCEL_END_PM,
+     EXCEL."BUDGET_GROUP" AS EXCEL_BUDGET_GROUP,
+     EXCEL."ESTIMATED_COST" AS EXCEL_ESTIMATED_COST
+FROM
+     "HR"."EXCEL" EXCEL]]>
+	</queryString>
+	<field name="EXCEL_YEAR" class="java.lang.String"/>
+	<field name="EXCEL_COUNTY" class="java.lang.String"/>
+	<field name="EXCEL_ROUTE" class="java.lang.String"/>
+	<field name="EXCEL_BEG_PM" class="java.lang.String"/>
+	<field name="EXCEL_END_PM" class="java.lang.String"/>
+	<field name="EXCEL_BUDGET_GROUP" class="java.lang.String"/>
+	<field name="EXCEL_ESTIMATED_COST" class="java.math.BigDecimal"/>
+	<group name="EXCEL_COUNTY">
+		<groupExpression><![CDATA[$F{EXCEL_COUNTY}]]></groupExpression>
+	</group>
+	<group name="EXCEL_ROUTE">
+		<groupExpression><![CDATA[$F{EXCEL_ROUTE}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
