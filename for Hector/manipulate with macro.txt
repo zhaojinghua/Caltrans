@@ -1,0 +1,72 @@
+Sub MyMacro()
+Dim rng as Range
+Dim cl as Range
+Dim lastNum as Range
+Set rng = Range(Selection.Address) 'Make sure that your active SELECTION is correct before running the macro'
+
+If Not rng.Columns.Count = 1 Then
+    MsgBox "Please select only 1 column of data at a time.",vbCritical
+    Exit SUb
+Else:
+    For each cl in rng
+        If IsNumeric(cl.Value) Then
+            If lastNum Is Nothing Then
+                cl.Offset(0,1).Formula = "=" & cl.Address
+            Else:
+                cl.Offset(0,1).Formula = "=" & cl.Address & "-" & lastNum.Address
+
+            End If
+            set lastNum = cl
+        End If
+    Next
+End If
+
+End Sub
+
+
+
+Do you require VBA?
+
+Insert a new Column before column C
+Column C with your values becomes column D
+You might need columnheaders..
+In cell C2 put: =IF(E2=0;0;SUM(E$2:$E2)) this identifies rows with number
+In cell E2 put: =IF(ISNUMBER(D2);1;0) this sets order for each row with a number to use next in vlookup
+in cell F2 put: =IF(ISNUMBER(D2);ABS(D2-VLOOKUP(MAX($C$1:C1);$C$1:D1;2;0));"")
+Autofill columns C, E and F.
+In column F you get your results, except first, which is "#VALUE"
+
+
+firstCell=selection.firstcell(); //remember the first cell in the selection
+for each cl in range			//loop through each cell in the selection
+	i=0							//initialize the counter 
+	if currentCell is Nothing Then		//operation for the first cell
+		cl.offset(0, i+4)=cl.offset(0, i+1)		//set the new column in the current row as the beg_pm
+		cl.offset(0, i+5)=cl.offset(0, i+3)     //set another new column in the current row as the length
+		currentCell = cl						//keep track of the current cell
+	Else:								//operation for the next cell
+		if cl <> currentCell Then		//if the current cell not equals to the previous cell 
+			for j=1 to i				
+				k=j
+				cl.offset(0, j+4)=cl.offset(-1, j+4) //bring down the cell in the previous row and in the same column
+				cl.offset(0, j+5)=cl.offset(-1, j+4) //bring down the cell in the previous row and in the same column
+				k++
+				cl.offset(0, k+4)=cl.offset(0, 1)    //copy the current beg_pm to the new column
+				cl.offset(0, k+5)=cl.offset(0, 3)   //copy the current length to the new column
+		End if		
+	End if	
+	i++
+	currentCell = cl
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		
