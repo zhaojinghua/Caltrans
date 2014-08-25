@@ -24,7 +24,6 @@ End If
 End Sub
 
 
-
 Do you require VBA?
 
 Insert a new Column before column C
@@ -36,27 +35,58 @@ in cell F2 put: =IF(ISNUMBER(D2);ABS(D2-VLOOKUP(MAX($C$1:C1);$C$1:D1;2;0));"")
 Autofill columns C, E and F.
 In column F you get your results, except first, which is "#VALUE"
 
+Sub selectPosition()
+Dim cell As Range, MergeVal$
+Dim TR&, BR&, LC%, RC%
+With Selection
+TR = .Row
+BR = .Rows.Count + .Row - 1
+LC = .Column
+RC = .Columns.Count + .Column - 1
+MsgBox _
+"Top row: " & TR & vbCrLf & _
+"Bottom row: " & BR & vbCrLf & _
+"Left Column: " & LC & vbCrLf & _
+"Right column: " & RC
+End With
+End Sub
 
-firstCell=selection.firstcell(); //remember the first cell in the selection
-for each cl in range			//loop through each cell in the selection
-	i=0							//initialize the counter 
-	if currentCell is Nothing Then		//operation for the first cell
+
+Dim firstCell
+For each cl in range 
+	firstCell=cl;              //remember the first cell in the selection
+	break
+End For
+
+Dim rowCount
+With Selection
+rowCount = .Rows.Count + .Row - 1         //set rowCount as the number of the total cell
+
+for outtercounter=1 to rowCount in range			//loop through each cell in the selection
+    k=0
+	for innercounter=1 to firstYearGroupCell.yearRepeat
+		currentYearGroupCell.offset(i, i+4)=Cell(i, i+1)		//set the new column in the current row as the beg_pm in the current iteration
+		currentYearGroupCell.offset(i, i+5)=Cell(i, i+3)       //set another new column in the current row as the length in the current iteration 
+		currentYearGroupCell = 	
+	if currentCell is Nothing Then		        //operation for the first cell
 		cl.offset(0, i+4)=cl.offset(0, i+1)		//set the new column in the current row as the beg_pm
 		cl.offset(0, i+5)=cl.offset(0, i+3)     //set another new column in the current row as the length
 		currentCell = cl						//keep track of the current cell
 	Else:								//operation for the next cell
 		if cl <> currentCell Then		//if the current cell not equals to the previous cell 
-			for j=1 to i				
-				k=j
+			for j=1 to 				
 				cl.offset(0, j+4)=cl.offset(-1, j+4) //bring down the cell in the previous row and in the same column
 				cl.offset(0, j+5)=cl.offset(-1, j+4) //bring down the cell in the previous row and in the same column
-				k++
-				cl.offset(0, k+4)=cl.offset(0, 1)    //copy the current beg_pm to the new column
-				cl.offset(0, k+5)=cl.offset(0, 3)   //copy the current length to the new column
+			End for
+			cl.offset(0, k+4)=cl.offset(0, 1)    //copy the current beg_pm to the new column
+			cl.offset(0, k+5)=cl.offset(0, 3)   //copy the current length to the new column
 		End if		
 	End if	
 	i++
 	currentCell = cl
+
+
+
 	
 	
 	
