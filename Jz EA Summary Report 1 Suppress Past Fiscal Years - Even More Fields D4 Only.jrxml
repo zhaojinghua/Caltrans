@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="1224" pageHeight="792" orientation="Landscape" columnWidth="1184" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.853116706110072"/>
-	<property name="ireport.x" value="2024"/>
+	<property name="ireport.zoom" value="2.357947691000059"/>
+	<property name="ireport.x" value="1238"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="yearstyle">
@@ -106,15 +106,16 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT null as iri_b_c,
-       null as adt,
-       null as adtt,
+       10000*(select min( ee.ca_benefit_pres) from ca_ea_benefit_vw ee where $P{PMS_SCENARIO_ID} = ee.pms_scenario_id) as adt,
+       10000*(select max( ff.ca_benefit_pres) from ca_ea_benefit_vw ff where $P{PMS_SCENARIO_ID} = ff.pms_scenario_id) as adtt,
        null as freight_route,
        null as lca,
        null as lcca,
        null as climate_resiliency,
        null as ca_ghg_b_c,
        null as score,
-       null as condition,
+       ((40 * ( 10000*a.ca_benefit_pres - 10000*(select min( aa.ca_benefit_pres) from ca_ea_benefit_vw aa where $P{PMS_SCENARIO_ID} = aa.pms_scenario_id))
+    / (10000*(select max( bb.ca_benefit_pres) from ca_ea_benefit_vw bb where $P{PMS_SCENARIO_ID} = bb.pms_scenario_id) - 10000*(select min( cc.ca_benefit_pres) from ca_ea_benefit_vw cc where $P{PMS_SCENARIO_ID} = cc.pms_scenario_id)))) as condition,
        null as ride,
        null as ghg_reduction,
        null as trade_corridor,
@@ -167,8 +168,6 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        AND a.ca_ea_no = wp.ca_ea_no
        AND a.pms_scenario_id = $P{PMS_SCENARIO_ID}
        and a.pms_scenario_id = b.pms_scenario_id
-       and a.eff_year >= (EXTRACT(YEAR FROM sysdate) +  DECODE(SIGN(TO_CHAR(sysdate, 'MM') - 6), -1, -1,  0, 0, 1, 1))
-       and TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)) = 4
        order by a.pms_scenario_id,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
        a.eff_year,
@@ -217,15 +216,15 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 	<field name="MWP_PROJECT_STATUS_ID" class="java.lang.String"/>
 	<field name="pms_scenario_name" class="java.lang.String"/>
 	<field name="IRI_B_C" class="java.lang.Float"/>
-	<field name="ADT" class="java.lang.String"/>
-	<field name="ADTT" class="java.lang.String"/>
+	<field name="ADT" class="java.math.BigDecimal"/>
+	<field name="ADTT" class="java.math.BigDecimal"/>
 	<field name="FREIGHT_ROUTE" class="java.lang.String"/>
 	<field name="LCA" class="java.lang.String"/>
 	<field name="LCCA" class="java.lang.String"/>
 	<field name="CLIMATE_RESILIENCY" class="java.lang.String"/>
 	<field name="CA_GHG_B_C" class="java.lang.String"/>
 	<field name="SCORE" class="java.lang.String"/>
-	<field name="condition" class="java.lang.String"/>
+	<field name="condition" class="java.math.BigDecimal"/>
 	<field name="ride" class="java.lang.String"/>
 	<field name="ghg_reduction" class="java.lang.String"/>
 	<field name="partnership" class="java.lang.String"/>
@@ -620,7 +619,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{ADT}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ADT}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
 					<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="877" y="0" width="28" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -631,7 +630,7 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{ADTT}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ADTT}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
 					<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="905" y="0" width="52" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
