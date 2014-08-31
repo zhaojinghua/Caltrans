@@ -2,6 +2,7 @@ select county, route, max(end_pm - beg_pm) as range from CONSTRUCTIONHISTORYPM w
 
 select distinct county, route, year, beg_pm, end_pm, (end_pm-beg_pm) as length from CONSTRUCTIONHISTORYPM where county='SON' and route='001' order by county, route, year;
 
+select * from constructionhistorypm;
 
 select b.ea, b.treatment, b.county, b.route, b.year, 
   b.beg_pm, b.end_pm, (b.end_pm-b.beg_pm) as length 
