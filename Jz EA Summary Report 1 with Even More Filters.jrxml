@@ -111,9 +111,6 @@
 	<parameter name="CA_ROUTE_FROM" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="PMS_BUDGET_CAT_ID" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[SELECT a.pms_scenario_id,
        b.pms_scenario_name,
@@ -126,7 +123,7 @@
        a.ca_route_from,
        a.lane_miles,
        (select t.pms_treatment_name from ms_treatment t where wp.pms_treatment_id=t.pms_treatment_id) as pms_treatment_id,
-       (select bc.PMS_BUDGET_CAT_NAME from PMS_BUDGET_CAT bc where bc.pms_budget_cat_id=a.pms_budget_cat_id) pms_budget_cat_id,
+       (select bc.PMS_BUDGET_CAT_NAME from PMS_BUDGET_CAT bc where bc.pms_budget_cat_id=a.pms_budget_cat_id)  pms_budget_cat_id,
        a.project_price,
 case when wp.MWP_PROJECT_STATUS_ID=1 then wp.project_price else 0 end as rec_cost,
 case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.project_price else 0 end as prog_cost,
@@ -166,7 +163,6 @@ case when wp.MWP_PROJECT_STATUS_ID<>1 then wp.lane_miles else 0 end as prog_lm,
        and (a.eff_year >= $P{EFF_YEAR} or $P{EFF_YEAR} is null)
        and (TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)) = $P{CA_DISTRICT_ID} or $P{CA_DISTRICT_ID}  is null)
        and (a.ca_route_from = $P{CA_ROUTE_FROM} or $P{CA_ROUTE_FROM} is null)
-
        order by a.pms_scenario_id,
        TO_NUMBER (SUBSTR (a.ca_ea_no, 1, 2)),
        a.eff_year,
